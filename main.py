@@ -14,7 +14,6 @@ from modules.quotation_bp import quotation_bp
 
 app = Flask(__name__)
 
-# Configure CORS explicitly for your frontends
 CORS(
     app,
     resources={r"/api/*": {"origins": [
@@ -26,10 +25,8 @@ CORS(
     allow_headers=["Content-Type", "Authorization"]
 )
 
-# Prevent redirect issues (trailing slashes)
 app.url_map.strict_slashes = False
 
-# Register all blueprints WITHOUT prefixes
 app.register_blueprint(customers_bp)
 app.register_blueprint(users_bp)
 app.register_blueprint(tenants_bp)
@@ -41,12 +38,11 @@ app.register_blueprint(purchase_bp)
 app.register_blueprint(quotation_bp)
 app.register_blueprint(suppliers_bp)
 
-# Health check route
 @app.route("/")
 def health():
     return {"status": "API running"}, 200
 
-# Handle preflight OPTIONS requests globally
+
 @app.before_request
 def handle_options():
     if request.method == "OPTIONS":

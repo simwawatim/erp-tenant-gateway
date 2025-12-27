@@ -40,6 +40,48 @@ def users():
         except requests.exceptions.RequestException as e:
             return {"message": str(e), "status": "fail", "data": None}, 500
 
+@users_bp.route("/api/users/<int:user_id>/", methods=["GET", "PUT", "DELETE"])
+@jwt_required
+def user_detail(user_id):
+    tenant_id = request.user.get("tenant_id")
+    jwt_token = request.headers.get("Authorization")
+
+    headers = {
+        "X-Tenant-ID": tenant_id,
+        "Authorization": jwt_token
+    }
+
+    try:
+        if request.method == "GET":
+            django_response = requests.get(
+                f"{DJANGO_BASE_URL}/users/{user_id}/",
+                headers=headers
+            )
+        elif request.method == "PUT":
+            data = request.get_json()
+            if not data:
+                return {"message": "Missing JSON body", "status": "fail"}, 400
+
+            django_response = requests.put(
+                f"{DJANGO_BASE_URL}/users/{user_id}/update/",
+                json=data,
+                headers=headers
+            )
+
+        elif request.method == "DELETE":
+            django_response = requests.delete(
+                f"{DJANGO_BASE_URL}/users/{user_id}/delete/",
+                headers=headers
+            )
+
+        return django_response.json(), django_response.status_code
+
+    except requests.exceptions.RequestException as e:
+        return {
+            "message": str(e),
+            "status": "fail",
+            "data": None
+        }, 500
 
 
 @users_bp.route("/api/login/", methods=["POST"])
