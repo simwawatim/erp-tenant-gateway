@@ -4,7 +4,7 @@ from config import DJANGO_BASE_URL
 from decorator.auth_decorator import jwt_required
 
 profile_bp = Blueprint("profile_bp", __name__)
-@profile_bp.route("/api/profile/", methods=["GET", "POST"])
+@profile_bp.route("/api/profile/", methods=["GET", "POST", "PUT"])
 @jwt_required
 def profile():
     tenant_id = request.user.get("tenant_id")
