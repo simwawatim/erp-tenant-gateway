@@ -12,6 +12,7 @@ from modules.supplier import suppliers_bp
 from modules.purchase_bp import purchase_bp
 from modules.quotation_bp import quotation_bp
 from modules.profile_bp import profile_bp
+from modules.profile_picture import profile_picture_bp
 
 app = Flask(__name__)
 
@@ -39,6 +40,7 @@ app.register_blueprint(purchase_bp)
 app.register_blueprint(quotation_bp)
 app.register_blueprint(suppliers_bp)
 app.register_blueprint(profile_bp)
+app.register_blueprint(profile_picture_bp)
 
 @app.route("/")
 def health():
