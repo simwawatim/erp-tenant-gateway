@@ -6,7 +6,6 @@ from decorator.auth_decorator import jwt_required
 items_bp = Blueprint("items_bp", __name__)
 
 def safe_json(response):
-    """Safely parse response as JSON, fallback to text or error."""
     try:
         return response.json()
     except ValueError:

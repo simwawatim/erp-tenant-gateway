@@ -1,5 +1,5 @@
-# DJANGO_BASE_URL = "https://bonga-4jbu.onrender.com/"
-DJANGO_BASE_URL = "http://localhost:8000/"
+DJANGO_BASE_URL = "https://bonga-4jbu.onrender.com/"
+# DJANGO_BASE_URL = "http://localhost:8000/"
 
 
 BASE_API = f"{DJANGO_BASE_URL}/api/v1/customers"

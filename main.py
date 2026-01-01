@@ -1,6 +1,7 @@
 from flask import Flask, request, make_response
 from flask_cors import CORS
 
+from modules.dashboard_bp import dashboard_bp
 from modules.sales_bp import sales_bp
 from modules.items_bp import items_bp
 from modules.customers import customers_bp
@@ -40,6 +41,7 @@ app.register_blueprint(purchase_bp)
 app.register_blueprint(quotation_bp)
 app.register_blueprint(suppliers_bp)
 app.register_blueprint(profile_bp)
+app.register_blueprint(dashboard_bp)
 app.register_blueprint(profile_picture_bp)
 
 @app.route("/")
