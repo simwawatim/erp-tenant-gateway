@@ -1,4 +1,4 @@
-DJANGO_BASE_URL = "https://bonga-4jbu.onrender.com/"
+DJANGO_BASE_URL = "https://bonga-h619.onrender.com/"
 # DJANGO_BASE_URL = "http://localhost:8000/"
 
 
