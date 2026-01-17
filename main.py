@@ -15,6 +15,7 @@ from modules.quotation_bp import quotation_bp
 from modules.profile_bp import profile_bp
 from modules.profile_picture import profile_picture_bp
 from modules.proforma_bp import proforma_bp
+from modules.item_import_bp import items_imports_bp
 app = Flask(__name__)
 
 CORS(
@@ -44,6 +45,8 @@ app.register_blueprint(profile_bp)
 app.register_blueprint(dashboard_bp)
 app.register_blueprint(profile_picture_bp)
 app.register_blueprint(proforma_bp)
+app.register_blueprint(items_imports_bp)
+
 @app.route("/")
 def health():
     return {"status": "API running"}, 200
