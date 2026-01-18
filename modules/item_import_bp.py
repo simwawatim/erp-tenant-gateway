@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 import requests
 from config import BASE_API, DJANGO_BASE_URL
 from decorator.auth_decorator import jwt_required
+from utils.header import get_headers
 
 items_imports_bp = Blueprint("items_imports_bp", __name__)
 
@@ -25,10 +26,34 @@ def items_imports():
         if request.method == "GET":
             django_response = requests.get(f"{DJANGO_BASE_URL}/imports/", params=dict(request.args), headers=headers)
             return jsonify(safe_json(django_response)), django_response.status_code
+        
         else:
             return jsonify({"error": "Method not allowed"}), 405
 
     except requests.exceptions.RequestException as e:
         return jsonify({"error": str(e)}), 500
+
+
+
+@items_imports_bp.route("/api/import/check/<int:item_id>/", methods=["GET"])
+@jwt_required()
+def check_item(item_id):
+    headers = get_headers()
+
+    try:
+        django_response = requests.get(
+            f"{DJANGO_BASE_URL}/check/import/{item_id}/",
+            headers=headers,
+            timeout=10,
+        )
+
+        return jsonify(safe_json(django_response)), django_response.status_code
+
+    except requests.exceptions.RequestException as e:
+        return jsonify({
+            "status": "error",
+            "message": "Failed to communicate with import service.",
+            "details": str(e)
+        }), 500
 
 
