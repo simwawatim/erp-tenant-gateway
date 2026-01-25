@@ -77,3 +77,24 @@ def purchase_by_id(purchase_id):
 
     except requests.exceptions.RequestException as e:
         return jsonify({"error": str(e)}), 500
+
+
+@purchase_bp.route("/api/purchases/sync/<int:purchase_id>/", methods=["PUT"])
+@jwt_required
+def sync_purchases(purchase_id):
+    headers = get_headers()
+    data = request.get_json()
+    
+    if not purchase_id:
+        return jsonify({"fail": "Missing purchase ID in URL"}), 400
+    if not data:
+        return jsonify({"fail": "Missing JSON body"}), 400
+
+    try:
+        django_response = requests.put(
+            f"{DJANGO_BASE_URL}/synchronize/purchases/{purchase_id}/", json=data, headers=headers
+        )
+        return jsonify(safe_json(django_response)), django_response.status_code
+
+    except requests.exceptions.RequestException as e:
+        return jsonify({"error": str(e)}), 500  

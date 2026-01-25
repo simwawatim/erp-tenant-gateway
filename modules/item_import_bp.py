@@ -36,7 +36,7 @@ def items_imports():
 
 
 @items_imports_bp.route("/api/import/check/<int:item_id>/", methods=["GET"])
-@jwt_required()
+@jwt_required
 def check_item(item_id):
     headers = get_headers()
 
@@ -57,3 +57,26 @@ def check_item(item_id):
         }), 500
 
 
+
+@items_imports_bp.route("/api/import/update/exists/", methods=["GET", "POST"])
+@jwt_required
+def update_imported_item():
+    tenant_id = request.user.get("tenant_id")
+    jwt_token = request.headers.get("Authorization")
+
+    headers = {
+        "X-Tenant-ID": tenant_id,
+        "Authorization": jwt_token  
+    }
+
+
+    if request.method == "POST":
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "Missing JSON body"}), 400
+
+        try:
+            django_response = requests.post(f"{DJANGO_BASE_URL}/imported-item/update/exists/", json=data, headers=headers)
+            return django_response.json(), django_response.status_code
+        except requests.exceptions.RequestException as e:
+            return jsonify({"error": str(e)}), 500
