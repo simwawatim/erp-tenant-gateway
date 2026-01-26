@@ -80,3 +80,32 @@ def update_imported_item():
             return django_response.json(), django_response.status_code
         except requests.exceptions.RequestException as e:
             return jsonify({"error": str(e)}), 500
+        
+        
+        
+
+@items_imports_bp.route("/api/save/imported/item/new/<int:item_id>", methods=["PUT"])
+@jwt_required
+def update_imported_item_to_new(item_id):
+    tenant_id = request.user.get("tenant_id")
+    jwt_token = request.headers.get("Authorization")
+    
+    if not item_id:
+        return jsonify({"error": "Missing item ID in URL"}), 400
+
+    headers = {
+        "X-Tenant-ID": tenant_id,
+        "Authorization": jwt_token  
+    }
+
+
+    if request.method == "PUT":
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "Missing JSON body"}), 400
+
+        try:
+            django_response = requests.put(f"{DJANGO_BASE_URL}/save/imported/item/new/{item_id}", json=data, headers=headers)
+            return django_response.json(), django_response.status_code
+        except requests.exceptions.RequestException as e:
+            return jsonify({"error": str(e)}), 500
