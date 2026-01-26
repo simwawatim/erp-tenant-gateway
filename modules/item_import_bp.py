@@ -105,7 +105,7 @@ def update_imported_item_to_new(item_id):
             return jsonify({"error": "Missing JSON body"}), 400
 
         try:
-            django_response = requests.put(f"{DJANGO_BASE_URL}/save/imported/item/new/{item_id}", json=data, headers=headers)
+            django_response = requests.put(f"{DJANGO_BASE_URL}/save/imported/item/new/{item_id}/", json=data, headers=headers)
             return django_response.json(), django_response.status_code
         except requests.exceptions.RequestException as e:
             return jsonify({"error": str(e)}), 500
