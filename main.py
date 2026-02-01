@@ -1,5 +1,6 @@
 from flask import Flask, request, make_response
 from flask_cors import CORS
+from marshmallow import Schema, fields
 
 from modules.dashboard_bp import dashboard_bp
 from modules.sales_bp import sales_bp
@@ -15,6 +16,7 @@ from modules.quotation_bp import quotation_bp
 from modules.profile_bp import profile_bp
 from modules.profile_picture import profile_picture_bp
 from modules.proforma_bp import proforma_bp
+from modules.item_import_bp import items_imports_bp
 app = Flask(__name__)
 
 CORS(
@@ -44,6 +46,16 @@ app.register_blueprint(profile_bp)
 app.register_blueprint(dashboard_bp)
 app.register_blueprint(profile_picture_bp)
 app.register_blueprint(proforma_bp)
+app.register_blueprint(items_imports_bp)
+
+
+app.config["API_TITLE"] = "My Flask API"
+app.config["API_VERSION"] = "1.0.0"
+app.config["OPENAPI_VERSION"] = "3.0.3"
+app.config["OPENAPI_URL_PREFIX"] = "/"
+app.config["OPENAPI_SWAGGER_UI_PATH"] = "/swagger"
+app.config["OPENAPI_SWAGGER_UI_URL"] = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
+
 @app.route("/")
 def health():
     return {"status": "API running"}, 200
