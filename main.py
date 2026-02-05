@@ -1,7 +1,7 @@
 from flask import Flask, request, make_response
 from flask_cors import CORS
 from marshmallow import Schema, fields
-
+from modules.pdf_generator_bp import document_bp
 from modules.dashboard_bp import dashboard_bp
 from modules.sales_bp import sales_bp
 from modules.items_bp import items_bp
@@ -47,6 +47,7 @@ app.register_blueprint(dashboard_bp)
 app.register_blueprint(profile_picture_bp)
 app.register_blueprint(proforma_bp)
 app.register_blueprint(items_imports_bp)
+app.register_blueprint(document_bp)
 
 
 app.config["API_TITLE"] = "My Flask API"
