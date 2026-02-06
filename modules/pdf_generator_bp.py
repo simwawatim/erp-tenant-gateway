@@ -21,7 +21,7 @@ def documents():
             return {"message": "Missing JSON body", "status": "fail", "data": None}, 400
         try:
             django_response = requests.post(
-                f"{DJANGO_BASE_URL}/my-profile/change-password/",
+                f"{DJANGO_BASE_URL}/generate/document/",
                 json=data,
                 headers=headers
             )
