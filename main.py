@@ -18,6 +18,7 @@ from modules.profile_picture import profile_picture_bp
 from modules.proforma_bp import proforma_bp
 from modules.item_import_bp import items_imports_bp
 from modules.permissions_bp import permissions_bp
+from modules.finance_bp import finance_bp
 app = Flask(__name__)
 
 CORS(
@@ -50,6 +51,7 @@ app.register_blueprint(proforma_bp)
 app.register_blueprint(items_imports_bp)
 app.register_blueprint(document_bp)
 app.register_blueprint(permissions_bp)
+app.register_blueprint(finance_bp)
 
 
 app.config["API_TITLE"] = "My Flask API"
