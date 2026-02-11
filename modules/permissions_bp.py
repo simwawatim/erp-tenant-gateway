@@ -85,7 +85,6 @@ def user_permissions(user_id):
             django_response = requests.get(
                 f"{DJANGO_BASE_URL}/user/{user_id}/permissions/",
                 headers=headers,
-                timeout=10
             )
             return jsonify(django_response.json()), django_response.status_code
         except requests.exceptions.RequestException as e:
