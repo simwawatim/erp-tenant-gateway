@@ -70,3 +70,25 @@ def quotation_detail(quotation_id):
 
     except requests.exceptions.RequestException as e:
         return jsonify({"error": str(e)}), 500
+
+
+@quotation_bp.route("/api/quotation/convert/to/sale/", methods=["POST"])
+@jwt_required
+def quotation_convert_to_sale():
+    data = request.get_json()
+
+    if not data:
+        return jsonify({"error": "Missing JSON body"}), 400
+
+    headers = get_headers()
+
+    try:
+        django_response = requests.post(
+            f"{DJANGO_BASE_URL}/convert/quotation/",
+            json=data,
+            headers=headers
+        )
+        return jsonify(safe_json(django_response)), django_response.status_code
+
+    except requests.exceptions.RequestException as e:
+        return jsonify({"error": str(e)}), 500
