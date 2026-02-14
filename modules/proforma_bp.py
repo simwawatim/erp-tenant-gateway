@@ -67,3 +67,20 @@ def proforma_by_id(proforma_id):
 
     except requests.exceptions.RequestException as e:
         return jsonify({"error": str(e)}), 500
+
+
+@proforma_bp.route("/api/convert/proforma/", methods=["GET", "POST"])
+@jwt_required
+def convert_proformas_to_invoice():
+    headers = get_headers()
+    data = request.get_json()
+    if not data:
+        return jsonify({"error": "Missing JSON body"}), 400
+
+    try:
+        django_response = requests.post(
+            f"{DJANGO_BASE_URL}/convert/proforma/", json=data, headers=headers
+        )
+        return jsonify(safe_json(django_response)), django_response.status_code
+    except requests.exceptions.RequestException as e:
+        return jsonify({"error": str(e)}), 500
