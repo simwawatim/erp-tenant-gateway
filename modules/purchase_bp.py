@@ -98,3 +98,19 @@ def sync_purchases(purchase_id):
 
     except requests.exceptions.RequestException as e:
         return jsonify({"error": str(e)}), 500  
+    
+    
+
+
+@purchase_bp.route("/api/purchases/fetch/", methods=["POST"])
+@jwt_required
+def fetch_purchases():
+    headers = get_headers()
+    try:
+        django_response = requests.post(
+            f"{DJANGO_BASE_URL}/purchase/fetch/", headers=headers
+        )
+        return jsonify(safe_json(django_response)), django_response.status_code
+
+    except requests.exceptions.RequestException as e:
+        return jsonify({"error": str(e)}), 500  
