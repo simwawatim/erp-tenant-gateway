@@ -1,7 +1,8 @@
-from flask import Blueprint, request, jsonify
-import requests
-from config import BASE_API, DJANGO_BASE_URL
 from decorator.auth_decorator import jwt_required
+from flask import Blueprint, request, jsonify
+from config import BASE_API, DJANGO_BASE_URL
+from datetime import datetime
+import requests
 
 customers_bp = Blueprint("customers_bp", __name__)
 
@@ -72,3 +73,13 @@ def customer_by_id(customer_id):
 
     except requests.exceptions.RequestException as e:
         return jsonify({"error": str(e)}), 500
+
+
+
+@customers_bp.route("/api/status/health", methods=["GET"])
+def health():
+    return jsonify({
+        "status": "UP",
+        "service": "Flask API Gateway",
+        "time": datetime.utcnow().isoformat()
+    }), 200
